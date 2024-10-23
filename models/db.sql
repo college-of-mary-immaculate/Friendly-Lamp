@@ -146,7 +146,7 @@ ALTER TABLE `reactions`
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`id`);
 
-yyhh--
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
