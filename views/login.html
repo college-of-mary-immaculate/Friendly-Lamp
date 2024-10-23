@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="box">
+        <form id="loginForm">
+            <h1>Log in</h1>
+            <div class="input-box">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <label>
+                <input type="checkbox" id="rememberMe"> Remember Me
+            </label>
+            <button type="submit" class="btn">Login</button>
+            <p>Don’t have an account? <a href="/register.html">Apply for new account</a></p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            const response = await fetch('http://localhost:3000/api/users/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                if (rememberMe) {
+                    localStorage.setItem('token', data.token);
+                } else {
+                    sessionStorage.setItem('token', data.token);
+                }
+                window.location.href = '/dashboard.html';  // Redirect to dashboard after login
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
+</body>
+</html>
